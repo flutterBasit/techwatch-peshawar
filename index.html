@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechWatch Peshawar - AI Smart Care</title>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+
+    <header class="bg-gray-800 border-b border-gray-700 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-500 tracking-wide">⌚ TechWatch</h1>
+            <p class="text-xs text-gray-400">📍 Near Gulhaji Plaza, University Road, Peshawar</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-4 space-y-8">
+        <section class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-xl mt-4">
+            <div class="border-l-4 border-amber-500 pl-3 mb-4">
+                <h2 class="text-xl font-bold">TechWatch Smart-Appraiser (Google AI Engine)</h2>
+                <p class="text-sm text-gray-400">Instantly check local PKR value and avoid Gulhaji Plaza replica watches.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Watch Brand</label>
+                    <input id="brand" type="text" placeholder="e.g., Seiko, Rolex" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Model / Reference Number</label>
+                    <input id="model" type="text" placeholder="e.g., SKX007, Submariner" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Declared Condition</label>
+                    <select id="condition" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-amber-500">
+                        <option value="Brand New">Brand New / Unworn</option>
+                        <option value="Pre-owned (Excellent)">Pre-owned (Excellent)</option>
+                        <option value="Pre-owned (Fair)">Pre-owned (Fair / Scratched)</option>
+                        <option value="Vintage">Vintage (Old / Untested)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="runGeminiAppraisal()" class="w-full mt-5 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-6 rounded-lg transition-colors cursor-pointer text-center">
+                ✨ Run AI Market Appraisal
+            </button>
+
+            <div id="loading" class="hidden text-center my-6 text-amber-400 font-medium animate-pulse">🕵️‍♂️ Consulting TechWatch Master Horologist... Please wait...</div>
+            <div id="aiResponse" class="hidden mt-6 bg-gray-900 p-5 rounded-xl border border-gray-700 whitespace-pre-wrap leading-relaxed text-gray-200"></div>
+        </section>
+
+        <!-- STORE FRONT INVENTORY -->
+        <section class="space-y-4">
+            <h3 class="text-lg font-bold text-gray-300 border-b border-gray-800 pb-2">🔥 Available In-Store Today</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-2">
+                    <span class="text-xs font-bold uppercase bg-green-900/50 text-green-400 px-2 py-0.5 rounded">In Stock</span>
+                    <h4 class="text-md font-bold text-white">Seiko 5 Sports Automatic</h4>
+                    <p class="text-xl font-black text-amber-500">PKR 75,000</p>
+                </div>
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-2">
+                    <span class="text-xs font-bold uppercase bg-green-900/50 text-green-400 px-2 py-0.5 rounded">In Stock</span>
+                    <h4 class="text-md font-bold text-white">Tissot PRX Quartz Blue</h4>
+                    <p class="text-xl font-black text-amber-500">PKR 125,000</p>
+                </div>
+                <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-2">
+                    <span class="text-xs font-bold uppercase bg-amber-900/50 text-amber-400 px-2 py-0.5 rounded">On Hold</span>
+                    <h4 class="text-md font-bold text-white">Vintage Omega Seamaster</h4>
+                    <p class="text-xl font-black text-amber-500">PKR 240,000</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        async function runGeminiAppraisal() {
+            const brand = document.getElementById('brand').value;
+            const model = document.getElementById('model').value;
+            const condition = document.getElementById('condition').value;
+
+            if (!brand || !model) {
+                alert('Please fill out fields first!');
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const responseBox = document.getElementById('aiResponse');
+            
+            loading.classList.remove('hidden');
+            responseBox.classList.add('hidden');
+
+            // Get API Key from your Google AI Studio account settings or your screen
+            const API_KEY = "AIzaSy..." // Paste your actual text key inside these quotes
+            const endpoint = `https://googleapis.com{API_KEY}`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `You are the chief horologist at TechWatch near Gulhaji Plaza, University Road, Peshawar. Evaluate this watch: Brand: ${brand}, Model: ${model}, Condition: ${condition}. Write a report with 3 headers: 1. ESTIMATED PKR VALUATION, 2. PESHAWAR MARKET RED FLAGS (clones at local plazas), 3. SERVICE RECOMMENDATION AT TECHWATCH workshop.`
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                responseBox.innerText = data.candidates[0].content.parts[0].text;
+                responseBox.classList.remove('hidden');
+            } catch (error) {
+                responseBox.innerText = "❌ Appraisal generated successfully. (Make sure your API key is correctly pasted in the code file).";
+                responseBox.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
